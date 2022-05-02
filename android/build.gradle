@@ -2,6 +2,8 @@ group 'io.flutter.plugins.nfc_emulator'
 version '1.0'
 
 buildscript {
+        ext.kotlin_version = '1.6.20'
+
     repositories {
         google()
         jcenter()
@@ -9,6 +11,8 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
+                classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
 }
 
@@ -20,9 +24,14 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 32
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 
     defaultConfig {
         minSdkVersion 19

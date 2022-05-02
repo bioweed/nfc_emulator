@@ -77,8 +77,7 @@ class _MyAppState extends State<MyApp> {
     if (_started) {
       await NfcEmulator.stopNfcEmulator();
     } else {
-      await NfcEmulator.startNfcEmulator(
-          "666B65630001", "cd22c716", "79e64d05ed6475d3acf405d6a9cd506b");
+      await NfcEmulator.startNfcEmulator("test data 123");
     }
     setState(() {
       _started = !_started;
