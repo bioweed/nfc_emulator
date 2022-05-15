@@ -29,9 +29,11 @@ class NfcEmulator {
    * cardUid: Card UID, for example: cd22c716
    * aesKey: AES key to encrypt, optional, 16 bytes (hex length 32)
    */
-  static Future<void> startNfcEmulator(String data) async {
+  static Future<void> startNfcEmulator(String data, {String? id, String? type}) async {
     await _channel.invokeMethod('startNfcEmulator', {
       "data": data,
+      "id": id,
+      "type": type,
     });
   }
 

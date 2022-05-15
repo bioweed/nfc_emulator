@@ -3,7 +3,6 @@ package io.flutter.plugins.nfc_emulator
 import android.app.Activity
 import android.content.Intent
 import android.nfc.NfcAdapter
-import android.os.Build
 import android.util.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
@@ -21,7 +20,7 @@ class NfcEmulatorPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
-    private lateinit var channel : MethodChannel
+    private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "nfc_emulator")
@@ -36,7 +35,9 @@ class NfcEmulatorPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
             result.success(nfcStatus)
         } else if (call.method == "startNfcEmulator") {
             val data = call.argument<String>("data")!!
-            startNfcEmulator(data)
+            val id = call.argument<String>("id")
+            val type = call.argument<String>("type")
+            startNfcEmulator(data, id, type)
             result.success(null)
         } else if (call.method == "stopNfcEmulator") {
             stopNfcEmulator()
@@ -79,10 +80,12 @@ class NfcEmulatorPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
             } else 0
         }
 
-    private fun startNfcEmulator(data: String) {
+    private fun startNfcEmulator(data: String, id: String? = null, type: String? = null) {
         Log.i("plugin", "startNfcEmulator")
         val intent = Intent(activity, KHostApduService::class.java)
-        intent.putExtra("ndefMessage", data)
+        intent.putExtra("msg", data)
+        intent.putExtra("id", id)
+        intent.putExtra("type", type)
         activity!!.startService(intent)
     }
 
